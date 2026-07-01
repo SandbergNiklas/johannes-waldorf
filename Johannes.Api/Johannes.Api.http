@@ -1,0 +1,25 @@
+@Johannes.Api_HostAddress = http://localhost:5058
+
+GET {{Johannes.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
+
+GET {{Johannes.Api_HostAddress}}/api/sections
+
+###
+
+GET {{Johannes.Api_HostAddress}}/api/section/infomoten
+
+###
+
+@id=2
+PUT {{Johannes.Api_HostAddress}}/api/section/{{id}}
+Content-Type: application/json
+
+{
+  "title": "Infomoten",
+  "content": "Har hittar du information om kommande infomoten i host."
+}
+
+###
