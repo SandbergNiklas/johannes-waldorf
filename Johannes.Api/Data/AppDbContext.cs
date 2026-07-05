@@ -9,6 +9,7 @@ namespace Johannes.Api.Data
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options){ }
         public DbSet<Section> Sections { get; set; }
+        public DbSet<Image> Images { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
