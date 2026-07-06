@@ -7,10 +7,10 @@ export default function Hero() {
         className="w-full h-full object-cover"
       />
       <div className="absolute inset-0 bg-black/30 flex flex-col justify-center items-center text-white">
-        <h1 style={{fontFamily: 'Antropos'}} className="text-6xl mb-4">
+        <h1  className="font-waldorf text-6xl mb-4">
           Johannes Waldorfförskolor
         </h1>
-        <p className="text-xl">En plats för lek, lärande och natur</p>
+        <p className="font-waldorf text-xl">En plats för lek, lärande och natur</p>
       </div>
     </div>
   );

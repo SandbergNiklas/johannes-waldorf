@@ -46,7 +46,10 @@ namespace Johannes.Api.Controllers
             section.Title = request.Title;
             section.Content = request.Content;
             section.UpdatedAt = DateTime.UtcNow;
-
+            if (request.ImageUrl != null)
+            {
+                section.ImageUrl = request.ImageUrl;
+            }
             await _context.SaveChangesAsync();
             return Ok(section);
         }
