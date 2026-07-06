@@ -480,3 +480,5 @@ $RECYCLE.BIN/
 
 # Vim temporary swap files
 *.swp
+# Uploaded images
+Johannes.Api/wwwroot/images/
