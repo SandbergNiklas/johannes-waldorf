@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { Section } from "@/types";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -18,18 +19,21 @@ export const metadata: Metadata = {
   description: "Välkommen till Johannes Waldorfförskolor i Stockholm",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const response = await fetch('http://localhost:5058/api/section');
+  const sections = await response.json();
+
   return (
     <html
       lang="sv"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        <Header />
+        <Header sections={sections}/>
         {children}
         <Footer/>
       </body>

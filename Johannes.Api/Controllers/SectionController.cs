@@ -53,5 +53,22 @@ namespace Johannes.Api.Controllers
             await _context.SaveChangesAsync();
             return Ok(section);
         }
+        [Authorize]
+        [HttpPost]
+        public async Task<ActionResult<Section>> CreateSection(CreateSectionRequest request)
+        {
+            var createSection = new Section()
+            {
+                Name = request.Name,
+                Title = request.Title,
+                Content = request.Content,
+                ImageUrl = request.ImageUrl
+            };
+                       
+            _context.Add(createSection);
+            await _context.SaveChangesAsync();
+            return Ok(createSection);
+
+        }
     }
 }
