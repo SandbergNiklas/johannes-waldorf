@@ -43,6 +43,25 @@ export default function EditPage() {
 
             router.push('/admin');
         }
+        async function handleDelete(){
+
+            if (!section) return;
+            
+            const confirmed = window.confirm('Är du säker på att du vill ta bort denna sektion');
+            const token = localStorage.getItem('token');
+            
+            if(!confirmed) return;
+
+            await fetch(`http://localhost:5058/api/section/${section?.id}`, {
+                method: 'DELETE',
+                headers: {                     
+                    Authorization: `Bearer ${token}`
+            }
+            
+            });
+            router.push('/admin');
+        }
+        
     
   return (
   <main className="max-w-2xl mx-auto p-8">
@@ -79,6 +98,13 @@ export default function EditPage() {
       className="bg-green-900 text-white px-6 py-2 rounded hover:bg-green-800"
     >
       Spara
+    </button>
+    <br/>
+    <button 
+      type="button" onClick={handleDelete}    
+      className="bg-red-700 text-white px-4 py-2 rounded hover:bg-red-600"
+    >
+      Ta Bort
     </button>
   </main>
 );

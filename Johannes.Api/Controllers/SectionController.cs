@@ -62,13 +62,27 @@ namespace Johannes.Api.Controllers
                 Name = request.Name,
                 Title = request.Title,
                 Content = request.Content,
-                ImageUrl = request.ImageUrl
+                ImageUrl = request.ImageUrl,
+                UpdatedAt = DateTime.UtcNow
             };
                        
             _context.Add(createSection);
             await _context.SaveChangesAsync();
             return Ok(createSection);
 
+        }
+        [Authorize]
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<Section>> DeleteSection(int id)
+        {
+            var section = await _context.Sections.FindAsync(id);
+            if (section == null)
+            {
+                return NotFound();
+            }
+            _context.Remove(section);
+            await _context.SaveChangesAsync();
+            return NoContent();
         }
     }
 }
