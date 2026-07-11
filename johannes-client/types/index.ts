@@ -6,3 +6,8 @@ export interface Section {
   imageUrl: string;
   updatedAt: string;
 }
+export interface SiteSettings {
+  id: number;
+  quote: string;
+  quoteAuthor: string;
+}

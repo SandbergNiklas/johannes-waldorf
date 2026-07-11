@@ -1,4 +1,5 @@
 import Hero from "@/components/Hero";
+
 // I page.tsx och admin/page.tsx
 import { Section } from '@/types';
 
@@ -8,6 +9,7 @@ export default async function Home() {
   return (
     <>
     <Hero/>
+    
     <main className="font-waldorf w-full mx-auto">
       {sections.map((section) => (
         <div 

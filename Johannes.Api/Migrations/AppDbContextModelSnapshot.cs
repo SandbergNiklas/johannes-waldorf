@@ -117,6 +117,25 @@ namespace Johannes.Api.Migrations
                             UpdatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
                         });
                 });
+
+            modelBuilder.Entity("Johannes.Api.Models.SiteSettings", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Quote")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("QuoteAuthor")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SiteSettings");
+                });
 #pragma warning restore 612, 618
         }
     }
