@@ -46,6 +46,7 @@ namespace Johannes.Api.Controllers
             section.Title = request.Title;
             section.Content = request.Content;
             section.UpdatedAt = DateTime.UtcNow;
+            section.ImageUrl = request.ImageUrl;
             if (request.ImageUrl != null)
             {
                 section.ImageUrl = request.ImageUrl;

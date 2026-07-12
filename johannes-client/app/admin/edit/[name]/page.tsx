@@ -91,7 +91,21 @@ export default function EditPage() {
         });
         alert('Bild uppladdad!');
     }
-        
+    //Lägg till bildborttagning från wwwroot
+    async function handleDeleteImage(){
+      const confirmed = window.confirm('Är du säker på att du vill ta bort bakgrundsbilden');
+      if(!confirmed)
+        return;
+      const token = localStorage.getItem('token');
+      await fetch(`http://localhost:5058/api/section/${section?.id}`, {
+            method: 'PUT',
+            headers: {'Content-Type':'application/json',
+                    Authorization: `Bearer ${token}`    
+            }, 
+            body: JSON.stringify({title, content, imageUrl: null})
+        });
+        alert('Bild borttagen!');
+    }       
     
   return (
   <main className="max-w-2xl mx-auto p-8">
@@ -151,6 +165,13 @@ export default function EditPage() {
   className="bg-green-700 text-white px-6 py-2 rounded hover:bg-green-600 mb-4"
 >
   Ladda upp bild
+</button>
+<button
+  type="button"
+  onClick={handleDeleteImage}
+  className="bg-red-700 text-white px-6 py-2 rounded rounded hover:bg-red-600"
+>
+  Ta bort bild
 </button>
   </main>
 );

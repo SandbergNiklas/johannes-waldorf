@@ -4,7 +4,9 @@ import Hero from "@/components/Hero";
 import { Section } from '@/types';
 
 export default async function Home() {
-  const response = await fetch('http://localhost:5058/api/section');
+  const response = await fetch('http://localhost:5058/api/section', {
+    cache: 'no-store'
+  });
   const sections: Section[] = await response.json();
   return (
     <>

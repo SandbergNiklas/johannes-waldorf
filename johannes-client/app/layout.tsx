@@ -24,7 +24,9 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const response = await fetch('http://localhost:5058/api/section');
+  const response = await fetch('http://localhost:5058/api/section', {
+    cache: 'no-store'
+  });
   const sections = await response.json();
 
   return (

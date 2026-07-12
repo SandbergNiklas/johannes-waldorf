@@ -1,6 +1,7 @@
 import { SiteSettings } from '@/types';
 export default async function Hero() {
-    const response = await fetch('http://localhost:5058/api/siteSettings');
+    const response = await fetch('http://localhost:5058/api/siteSettings', {
+            cache: 'no-store'});
     const siteSettings: SiteSettings = await response.json();
   
   return (
