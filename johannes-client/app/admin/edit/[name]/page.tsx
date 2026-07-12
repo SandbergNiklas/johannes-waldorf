@@ -11,6 +11,7 @@ export default function EditPage() {
     const [section, setSection] = useState<Section | null>(null);
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
+     const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
     useEffect(() => {
             const token = localStorage.getItem('token');
@@ -61,6 +62,35 @@ export default function EditPage() {
             });
             router.push('/admin');
         }
+        async function handleUploadImage(){
+      if(!selectedFile)
+        return;
+      const token = localStorage.getItem('token');
+      const formData = new FormData();
+      formData.append('file', selectedFile);
+      formData.append('altText', title);
+
+      const response = await fetch('http://localhost:5058/api/images/upload', {
+            method: 'POST',
+            headers: {
+              Authorization: `Bearer ${token}`    
+            }, 
+            body: formData
+        });
+        if(!response.ok){
+            alert('Något gick fel vid bilduppladdning');
+            return;
+        }
+        const image = await response.json();
+        await fetch(`http://localhost:5058/api/section/${section?.id}`, {
+            method: 'PUT',
+            headers: {'Content-Type':'application/json',
+                    Authorization: `Bearer ${token}`    
+            }, 
+            body: JSON.stringify({title, content, imageUrl: image.url})
+        });
+        alert('Bild uppladdad!');
+    }
         
     
   return (
@@ -106,6 +136,22 @@ export default function EditPage() {
     >
       Ta Bort
     </button>
+    <div className="mb-4">
+  <label className="font-waldorf block text-green-900 mb-2">Bakgrundsbild</label>
+  <input 
+    type="file"
+    accept="image/*"
+    onChange={(e) => setSelectedFile(e.target.files?.[0] || null)}
+    className="w-full border rounded p-2"
+  />
+</div>
+<button
+  type="button"
+  onClick={handleUploadImage}
+  className="bg-green-700 text-white px-6 py-2 rounded hover:bg-green-600 mb-4"
+>
+  Ladda upp bild
+</button>
   </main>
 );
 
