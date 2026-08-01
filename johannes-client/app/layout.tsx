@@ -4,6 +4,7 @@ import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Section } from "@/types";
+import { Lora, Inter} from "next/font/google";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -12,6 +13,10 @@ const geistSans = Geist({
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+});
+const lora = Lora({
+  variable: "--font-lora",
+  subsets: ["latin"]
 });
 
 export const metadata: Metadata = {
@@ -32,7 +37,7 @@ export default async function RootLayout({
   return (
     <html
       lang="sv"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable}  ${lora.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
         <Header sections={sections}/>

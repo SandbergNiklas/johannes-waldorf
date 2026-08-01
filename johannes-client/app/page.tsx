@@ -25,8 +25,9 @@ export default async function Home() {
       }: {}}>
           <div className="bg-black/40 p-6 rounded max-w-3xl mx-auto text-left">
             <h2 className="font-waldorf text-2xl text-white mb-2">{section.title}</h2>
-                <p className="font-waldorf text-white text-base leading-relaxed max-w-2xl">
-                {section.content}
+                <p className="text-white text-base leading-relaxed max-w-2xl" 
+                  style={{fontFamily: 'var(--font-lora)'}}>
+                  {section.content}
                 </p>
             </div>
         </div>
