@@ -6,7 +6,7 @@ export default async function Hero() {
   
   return (
     
-    <div className="relative h-[500px] w-full">
+    <div className="relative h-[250px] w-full">
       <img
         src="http://localhost:5058/images/9e1b450f-4f74-4d85-a1f1-95894915e97e..jpg"
         alt="Johannes Waldorfförskolor"

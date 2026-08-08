@@ -11,3 +11,11 @@ export interface SiteSettings {
   quote: string;
   quoteAuthor: string;
 }
+export interface Image {
+  id: number;
+  fileName: string;
+  url: string;
+  altText: string;
+  caption?: string;
+  isGallery: boolean;
+}

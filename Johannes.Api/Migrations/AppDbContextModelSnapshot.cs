@@ -41,6 +41,9 @@ namespace Johannes.Api.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsGallery")
+                        .HasColumnType("bit");
+
                     b.Property<DateTime>("UploadedAt")
                         .HasColumnType("datetime2");
 

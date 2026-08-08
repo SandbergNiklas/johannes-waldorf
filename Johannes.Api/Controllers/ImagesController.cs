@@ -57,6 +57,27 @@ namespace Johannes.Api.Controllers
             var images = await _context.Images.ToListAsync();
             return Ok(images);
         }
+        [HttpGet("gallery")]
+        public async Task<ActionResult<IEnumerable<Image>>> GetAllGallery()
+        {
+            var images = await _context.Images
+                .Where(i => i.IsGallery)
+                .ToListAsync();
+            return Ok(images);
+        }
+        [Authorize]
+        [HttpDelete("gallery/{id}")]
+        public async Task<ActionResult> DeleteGalleryImage(int id)
+        {
+            var image = await _context.Images.FindAsync(id);
+            if (image == null)
+            {
+                return NotFound();
+            }
+            _context.Remove(image);
+            await _context.SaveChangesAsync();
+            return NoContent();
+        }
 
 
     }

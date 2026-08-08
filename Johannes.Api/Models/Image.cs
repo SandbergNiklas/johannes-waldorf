@@ -8,5 +8,6 @@
         public required string AltText { get; set; }
         public string? Caption { get; set; }
         public DateTime UploadedAt { get; set; } = DateTime.UtcNow;
+        public bool IsGallery { get; set; } = false;
     }
 }

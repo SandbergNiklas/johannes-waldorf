@@ -1,7 +1,8 @@
 'use client'
 import { useEffect, useState } from 'react';
 import {useRouter} from 'next/navigation';
-import {Section, SiteSettings} from '@/types'; 
+import {Section, SiteSettings} from '@/types';
+import { Image } from '@/types'; 
 export default function AdminPage(){
     const router = useRouter();
     const [sections, setSections] = useState<Section[]>([]);
@@ -10,7 +11,9 @@ export default function AdminPage(){
     const [newContent, setNewContent] = useState('');
     const [quote, setQuote] = useState('');
     const [quoteAuthor, setQuoteAuthor] = useState('');
-   
+    const [galleryFile, setGalleryFile] = useState<File | null>(null);
+    const [galleryAltText, setGalleryAltText] = useState('');
+    const [galleryImages, setGalleryImages] = useState<Image[]>([]);
     
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -30,7 +33,10 @@ export default function AdminPage(){
         .then((data: SiteSettings)=> {
           setQuote(data.quote)
           setQuoteAuthor(data.quoteAuthor)
-        }); 
+        });
+        fetch('http://localhost:5058/api/images/gallery')
+        .then(res => res.json())
+        .then((data: Image[]) => setGalleryImages(data)); 
     }, []);
 
     async function handleCreate(){
@@ -71,6 +77,43 @@ export default function AdminPage(){
         
         console.log(`Nytt citat {siteSetting.Qoute}`);
     }
+    async function handleGalleryUpload() {
+    if (!galleryFile) return;
+    
+    const token = localStorage.getItem('token');
+    const formData = new FormData();
+    formData.append('file', galleryFile);
+    formData.append('altText', galleryAltText);
+    formData.append('isGallery', 'true'); // alltid true här
+    
+    const response = await fetch('http://localhost:5058/api/images/upload', {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${token}` },
+      body: formData
+    });
+    
+    if (!response.ok) {
+      alert('Något gick fel vid bilduppladdning');
+      return;
+    }
+    
+    alert('Bild tillagd i galleriet!');
+    setGalleryFile(null);
+    setGalleryAltText('');
+  }
+  async function handleDeleteGalleryImage(id: number) {
+  const confirmed = window.confirm('Ta bort bilden från galleriet?');
+  if (!confirmed) return;
+  
+  const token = localStorage.getItem('token');
+  
+  await fetch(`http://localhost:5058/api/images/gallery/${id}`, {
+    method: 'DELETE',
+    headers: { Authorization: `Bearer ${token}` }
+  });
+  
+  setGalleryImages(galleryImages.filter(img => img.id !== id));
+}
     
     return (<main className='max-w-4xl mx-auto p-8'>
         <h1 className="font-waldorf text-3xl text-green-900 mb-8">
@@ -140,7 +183,49 @@ export default function AdminPage(){
     >
       Spara nytt citat
     </button>
-    
+    <h2 className="font-waldorf text-2xl text-green-900 mt-8 mb-4">Bildgalleri</h2>
+<div className="mb-4">
+  <label className="font-waldorf block text-green-900 mb-2">Alt-text</label>
+  <input
+    value={galleryAltText}
+    onChange={(e) => setGalleryAltText(e.target.value)}
+    className="w-full border rounded p-2"
+  />
+</div>
+<div className="mb-4">
+  <label className="font-waldorf block text-green-900 mb-2">Välj bild</label>
+  <input
+    type="file"
+    accept="image/*"
+    onChange={(e) => setGalleryFile(e.target.files?.[0] || null)}
+    className="w-full border rounded p-2"
+  />
+</div>
+<button
+  type="button"
+  onClick={handleGalleryUpload}
+  className="font-waldorf bg-green-900 text-white px-6 py-2 rounded w-full"
+>
+  Ladda upp till galleri
+</button>
+<div className="grid grid-cols-3 gap-4 mt-4">
+  {galleryImages.map((image) => (
+    <div key={image.id} className="relative">
+      <img
+        src={`http://localhost:5058${image.url}`}
+        alt={image.altText}
+        className="w-full h-32 object-cover rounded"
+      />
+      <button
+        type="button"
+        onClick={() => handleDeleteGalleryImage(image.id)}
+        className="absolute top-1 right-1 bg-red-700 text-white px-2 py-1 rounded text-xs"
+      >
+        Ta bort
+      </button>
+    </div>
+  ))}
+</div>
       
     </main>
     );
