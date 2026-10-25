@@ -1,6 +1,6 @@
-﻿using Johannes.Api.Data;
-using Johannes.Api.Models;
+﻿using Johannes.Api.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -19,6 +19,7 @@ namespace Johannes.Api.Controllers
             _config = config;
         }
         [HttpPost("login")]
+        [EnableRateLimiting("login")]
         public ActionResult<string> Login([FromBody]LoginRequest request)
         {
             var adminUsername = _config["AdminCredentials:Username"];
@@ -36,9 +37,10 @@ namespace Johannes.Api.Controllers
             return Ok(new { token });
             
         }
-        private string GenerateToken(string userName) 
-        {
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("superSecretKey1234567890abcdefgh"));
+        private string GenerateToken(string userName){ 
+            var jwtKey = _config["Jwt:Key"]
+            ?? throw new InvalidOperationException("Jwt:Key saknas i konfigurationen");
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
             var claims = new[]
             {
@@ -46,8 +48,8 @@ namespace Johannes.Api.Controllers
                 new Claim(ClaimTypes.Role, "Admin")
             };
             var token = new JwtSecurityToken(
-                issuer: "johannes-api",
-                audience: "johannes-client",
+                issuer: _config["Jwt:Issuer"],
+                audience: _config["Jwt:Audience"],
                 claims: claims,
                 expires: DateTime.UtcNow.AddHours(1),
                 signingCredentials: creds

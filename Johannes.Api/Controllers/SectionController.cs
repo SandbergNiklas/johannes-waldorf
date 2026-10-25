@@ -34,7 +34,7 @@ namespace Johannes.Api.Controllers
             }
             return Ok(section);
         }
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         [HttpPut("{id}")]
         public async Task<ActionResult<Section>> UpdateSection(int id, [FromBody] UpdateSectionRequest request)
         {
@@ -54,7 +54,7 @@ namespace Johannes.Api.Controllers
             await _context.SaveChangesAsync();
             return Ok(section);
         }
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<ActionResult<Section>> CreateSection(CreateSectionRequest request)
         {
@@ -72,7 +72,7 @@ namespace Johannes.Api.Controllers
             return Ok(createSection);
 
         }
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<ActionResult<Section>> DeleteSection(int id)
         {

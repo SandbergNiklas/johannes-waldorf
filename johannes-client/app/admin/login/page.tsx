@@ -24,7 +24,6 @@ export default function Login(){
         
         router.push('/admin');
         
-        console.log(email, password);
     }
           
         return (<>

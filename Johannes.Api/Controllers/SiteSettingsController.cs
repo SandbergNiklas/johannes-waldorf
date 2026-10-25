@@ -26,7 +26,7 @@ namespace Johannes.Api.Controllers
             }
             return Ok(siteSettings);
         }
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         [HttpPut]
         public async Task<ActionResult<SiteSettings>> UpdateSiteSettingsAsync([FromBody] UpdateSiteSettingsRequest request)
         {

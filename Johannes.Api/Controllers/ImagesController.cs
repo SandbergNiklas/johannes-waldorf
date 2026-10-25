@@ -18,7 +18,7 @@ namespace Johannes.Api.Controllers
             _context = context;
             _env = env;
         }
-        [Authorize] 
+        [Authorize(Roles = "Admin")] 
         [HttpPost("upload")]
         public async Task<ActionResult<Image>> Upload(IFormFile file, [FromForm] string altText, [FromForm] string? caption)
         {
@@ -65,7 +65,7 @@ namespace Johannes.Api.Controllers
                 .ToListAsync();
             return Ok(images);
         }
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         [HttpDelete("gallery/{id}")]
         public async Task<ActionResult> DeleteGalleryImage(int id)
         {
@@ -76,7 +76,7 @@ namespace Johannes.Api.Controllers
             }
             _context.Remove(image);
             await _context.SaveChangesAsync();
-            return NoContent();
+            return NoContent(); 
         }
 
 
