@@ -11,8 +11,8 @@ export default function EditPage() {
     const [section, setSection] = useState<Section | null>(null);
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
-     const [selectedFile, setSelectedFile] = useState<File | null>(null);
-
+    const [selectedFile, setSelectedFile] = useState<File | null>(null);
+    
     useEffect(() => {
             const token = localStorage.getItem('token');
             if(!token){
@@ -91,6 +91,7 @@ export default function EditPage() {
         });
         alert('Bild uppladdad!');
     }
+    
     //Lägg till bildborttagning från wwwroot
     async function handleDeleteImage(){
       const confirmed = window.confirm('Är du säker på att du vill ta bort bakgrundsbilden');
